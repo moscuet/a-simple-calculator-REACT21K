@@ -8,8 +8,9 @@ document.getElementById('result').addEventListener('click', performCalculation);
  * @return {number} result of the calculation
  */
 function performCalculation(){
+    console.log('before: ','f',firstNumber,'s',secondNumber, 'o',operation)
     let result
-    if( !firstNumber || !secondNumber) return
+    if( !firstNumber || !secondNumber || !operation) return
     if (operation === 'plus') result = Number(secondNumber) + Number(firstNumber) ; 
     if (operation === 'minus') result =  Number(secondNumber) - Number(firstNumber) ;
     if (operation === 'multiply') result =   Number(secondNumber) *  Number(firstNumber);
@@ -18,17 +19,18 @@ function performCalculation(){
     secondNumber = ''+ result
     firstNumber=''
     operation = ''
+    console.log('after: ','f',firstNumber,'s',secondNumber, 'o',operation)
+
 }
 
 
 
 document.querySelectorAll('.operators > div').forEach(button => {
-    button.addEventListener('click', function(){ 
-        updateSelectedOperation(this);
+    button.addEventListener('click', function(){
+        updateSelectedOperation()
         if (firstNumber) secondNumber = firstNumber
         firstNumber = ''
     })
-
 })
 
 document.querySelectorAll('.numbers > div').forEach(button => {
@@ -38,7 +40,7 @@ document.querySelectorAll('.numbers > div').forEach(button => {
             updateDisplay();
             return
           }
-        updateSelectedNumber(this);
+        updateSelectedNumber();
         updateDisplay();
     });
 })
@@ -48,10 +50,10 @@ function updateDisplay() {
 }
 
 function updateSelectedNumber(text) {
-    if (text.innerText === '.' && firstNumber.indexOf('.') > -1){
+    if (this.event.target.innerText === '.' && firstNumber.indexOf('.') > -1){
         return;
     }
-    firstNumber += text.innerText;
+    firstNumber += this.event.target.innerText;
 }
 
 function reSet (){
@@ -64,10 +66,8 @@ function reSet (){
  * update the variable operation with the user choice
  * @return {void}
  */
-function updateSelectedOperation(text){
-
-     console.log('#', text.innerText)
-    switch(text.innerText){
+function updateSelectedOperation(){
+    switch(this.event.target.innerText){
         case '+':
             operation = 'plus';
             break;
